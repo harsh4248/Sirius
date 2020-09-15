@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "621720594800",
+    "firebase_url": "https://sirius-aba58.firebaseio.com",
+    "project_id": "sirius-aba58",
+    "storage_bucket": "sirius-aba58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621720594800:android:7bb7f81c606805b16b87b5",
+        "android_client_info": {
+          "package_name": "com.example.sirius"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621720594800-tjt2m6tb8pou4t5ojrcnngcdopc8vg8l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAnYGiG7IlSSsKvJhLy_RI66zf3EtdU0s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621720594800-tjt2m6tb8pou4t5ojrcnngcdopc8vg8l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
