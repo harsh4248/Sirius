@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,14 +27,20 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class signupActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth firebaseAuth;
     EditText email,password,passwordConfirm,username;
-    String EmailString,passwordString,confirmpasswordString;
+    String EmailString,passwordString,confirmpasswordString,usernamestring;
     Button signupbutton;
     TextView signintextview;
+    ProgressBar showprogressbar;
+
+    private DatabaseReference mdatabase;
+
 
 
     @Override
@@ -52,12 +59,14 @@ public class signupActivity extends AppCompatActivity implements View.OnClickLis
         username= findViewById(R.id.editTextTextPersonName);
         signupbutton= findViewById(R.id.buttonsignin);
         signintextview= findViewById(R.id.textViewsignin);
+        showprogressbar= findViewById(R.id.progressBar);
 
-
+        showprogressbar.setVisibility(View.INVISIBLE);
         signupbutton.setOnClickListener(this);
         signintextview.setOnClickListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
 
         password.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -123,17 +132,38 @@ public class signupActivity extends AppCompatActivity implements View.OnClickLis
         EmailString= email.getText().toString().trim();
         passwordString=password.getText().toString().trim();
         confirmpasswordString=passwordConfirm.getText().toString().trim();
+        usernamestring=username.getText().toString().trim();
+
+
 
         if(!passwordString.matches(confirmpasswordString)) {
             passwordConfirm.setError("Doesn't Match");
         }
         else {
+            showprogressbar.setVisibility(View.VISIBLE);
             firebaseAuth.createUserWithEmailAndPassword(EmailString, passwordString).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(signupActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
-                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        User user = new User(EmailString,usernamestring);
+                        FirebaseDatabase.getInstance().getReference("Users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                showprogressbar.setVisibility(View.GONE);
+                                if(task.isSuccessful()) {
+                                    Toast.makeText(signupActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(signupActivity.this,Dashboard.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Toast.makeText(signupActivity.this, "Unknown Error Occurred", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+
 
                     } else {
 
@@ -159,6 +189,8 @@ public class signupActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }
             });
+
+
         }
     }
 }
