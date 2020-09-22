@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -27,8 +28,15 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(Dashboard.this,loginActivity.class);
-                startActivity(intent);
+
+                if(FirebaseAuth.getInstance().getCurrentUser()==null) {
+                    Toast.makeText(Dashboard.this, "Successful signOut", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Dashboard.this, loginActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(Dashboard.this, "SignOut error", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
