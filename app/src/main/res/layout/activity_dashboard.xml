@@ -6,13 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".Dashboard">
 
-    <Button
-        android:id="@+id/buttonsignout"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SIGN OUT"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginRight="16dp"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        />
+        <!--android:src="@drawable/ic_baseline_camera_24"-->
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
