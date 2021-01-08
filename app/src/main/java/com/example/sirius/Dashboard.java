@@ -61,7 +61,8 @@ public class Dashboard extends AppCompatActivity {
         cameraOpenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(Dashboard.this,Camera.class);
+                startActivity(intent);
             }
         });
 
