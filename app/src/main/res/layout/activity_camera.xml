@@ -14,25 +14,11 @@
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/preview_area"
         android:importantForAccessibility="no"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/layoutforbutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera">
+
 
       <!--  <androidx.cardview.widget.CardView
             android:id="@+id/capture"
@@ -51,18 +37,57 @@
                 android:src="@drawable/ic_baseline_camera_24"
                 />
 
+
         </androidx.cardview.widget.CardView>
         -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutforbutton"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
         <ImageButton
+            android:id="@+id/importimagebutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_button"
-            android:layout_margin="10dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_baseline_camera_62"
-            />
+            android:layout_margin="10dp"
+            android:background="#ffffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_image_24" />
 
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/capturebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/viewcapturedimages"
+            app:layout_constraintStart_toEndOf="@+id/importimagebutton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_camera_62" />
+
+        <ImageButton
+            android:id="@+id/viewcapturedimages"
+            android:layout_width="40dp"
+            android:layout_height="70dp"
+            android:layout_margin="10dp"
+            android:background="#707070"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_image_24" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
 
 
