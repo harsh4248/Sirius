@@ -19,6 +19,8 @@ public class recylerviewAdapter extends RecyclerView.Adapter<recylerviewAdapter.
 
     public List<String> list;
     Context context;
+    private View.OnClickListener mOnItemClickListener;
+
 
     public recylerviewAdapter(Context context, List<String> list) {
         this.list = list;
@@ -47,6 +49,10 @@ public class recylerviewAdapter extends RecyclerView.Adapter<recylerviewAdapter.
         return list.size();
     }
 
+    public void setOnItemClickListener(View.OnClickListener itemClickListener) {
+        mOnItemClickListener = itemClickListener;
+    }
+
     public class myView extends RecyclerView.ViewHolder {
 
         ImageView displayImage;
@@ -54,6 +60,9 @@ public class recylerviewAdapter extends RecyclerView.Adapter<recylerviewAdapter.
             super(itemView);
 
             displayImage = itemView.findViewById(R.id.displayimage);
+
+            itemView.setTag(this);
+            itemView.setOnClickListener(mOnItemClickListener);
         }
     }
 }

@@ -19,16 +19,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileUtils;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
@@ -48,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -63,7 +69,7 @@ public class Camera extends AppCompatActivity   {
     private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE","android.permission.READ_EXTERNAL_STORAGE"};
     private Executor executor = Executors.newSingleThreadExecutor();
     PreviewView previewView;
-    ImageButton captureImageButton,viewCapturedImagesButton;
+    ImageButton captureImageButton,viewCapturedImagesButton,importImagesButton;
     ArrayList<Images> capturedImagesInBitMap;
     ArrayList<BytesImages> bytesImages;
     //ArrayList<ImagesData> cptImagesBitMap;
@@ -84,6 +90,7 @@ public class Camera extends AppCompatActivity   {
 
         captureImageButton = findViewById(R.id.capturebutton);
         viewCapturedImagesButton = findViewById(R.id.viewcapturedimages);
+        importImagesButton = findViewById(R.id.importimagebutton);
 
         capturedImagesInBitMap = new ArrayList<>();
         bytesImages = new ArrayList<>();
@@ -94,6 +101,17 @@ public class Camera extends AppCompatActivity   {
         } else{
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
+
+        importImagesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
+            }
+        });
 
         viewCapturedImagesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +126,7 @@ public class Camera extends AppCompatActivity   {
                     //intent.putParcelableArrayListExtra("Key",bytesImages);
                     startActivity(intent);
                 }*/
-                if(compressedImagesInFile.isEmpty()) {
+                if(captImgName.isEmpty()) {
                     Toast.makeText(Camera.this, "First Capture Images", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -138,6 +156,49 @@ public class Camera extends AppCompatActivity   {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && resultCode == RESULT_OK && data != null) {
+
+            ClipData clipData = data.getClipData();
+
+            if(clipData != null) {
+                for(int i=0;i<clipData.getItemCount();i++) {
+                    Uri uri = clipData.getItemAt(i).getUri();
+                    String fullpath = getFullPathFromURI(getApplicationContext(),uri);
+                    captImgName.add(fullpath);
+                    /*File file = new File(Objects.requireNonNull(uri.getPath()));
+                    captImgName.add(file.toString());*/
+                }
+            } else {
+                Uri uri = data.getData();
+                String fullpath = getFullPathFromURI(getApplicationContext(),uri);
+                captImgName.add(fullpath);
+               /* File file = new File(Objects.requireNonNull(uri.getPath()));
+                captImgName.add(file.toString());*/
+
+            }
+        }
+    }
+
+    private String getFullPathFromURI(Context context, Uri uri) {
+
+        Cursor cursor = getContentResolver().query(uri,null,null,null,null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
+        cursor.close();
+
+        cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,null
+                , MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
     }
 
     @Override
