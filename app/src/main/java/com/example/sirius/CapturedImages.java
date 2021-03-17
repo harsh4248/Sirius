@@ -95,6 +95,7 @@ public class CapturedImages extends AppCompatActivity implements Serializable {
     TextRecognizer recognizer;
     String ocrString;
     ArrayList<String> ocrarraylist;
+    int globalLoop,temploop;
     //boolean forWordDocument= true ;
     StringBuilder ocrLines;
     private FirebaseFunctions mFunctions;
@@ -268,15 +269,18 @@ public class CapturedImages extends AppCompatActivity implements Serializable {
 
                         }
                         else {
+
                                 Thread thread = new Thread(()->{
+                                    globalLoop = imagesDataArrayList.size();
                                     for(int i=0;i<imagesDataArrayList.size();i++) {
 
                                         try {
 
                                             File compressedImage = Compressor.getDefault(CapturedImages.this).compressToFile(new File(imagesDataArrayList.get(i)));
                                             InputImage image = InputImage.fromFilePath(CapturedImages.this, Uri.fromFile(compressedImage));
-                                            recognizeText(image);
+                                            recognizeText(image,i);
                                             Log.e("TimesLoop", Integer.toString(i));
+                                            temploop=i;
 
 
                                         } catch (IOException e) {
@@ -291,6 +295,8 @@ public class CapturedImages extends AppCompatActivity implements Serializable {
 
                                     //editWord(ocrarraylist);
                                 }
+                                /*Intent intent = new Intent(CapturedImages.this,Dashboard.class);
+                                startActivity(intent);*/
                                 //String tempString = readFromTextFile();
                                 //createWord(tempString);
                         }
@@ -474,7 +480,7 @@ public class CapturedImages extends AppCompatActivity implements Serializable {
 
         return app_folder_path;
     }
-    private void recognizeText(InputImage image) {
+    private void recognizeText(InputImage image,int temp) {
 
         // [START get_detector_default]
         TextRecognizer recognizer = TextRecognition.getClient();
@@ -507,7 +513,7 @@ public class CapturedImages extends AppCompatActivity implements Serializable {
                                         }
                                         ocrString+="\n";
                                         createTextFile(ocrString);
-                                        createWord(ocrString);
+                                        //createWord(ocrString);
                                         //createWord(ocrString);
                                         //Log.e("Text",ocrString);
                                         //ocrString="";
@@ -531,6 +537,14 @@ public class CapturedImages extends AppCompatActivity implements Serializable {
                                         Log.e("ERROR",e.toString());
                                     }
                                 });
+        while(!result.isComplete()) {}
+        Log.d("Image Number",Integer.toString(temp)+" "+Integer.toString(globalLoop));
+        if(temp==(globalLoop-1)) {
+            Intent intent = new Intent(CapturedImages.this,Dashboard.class);
+            startActivity(intent);
+        }
+
+       // return result;
         // [END run_detector]
         //return ocrString;
     }

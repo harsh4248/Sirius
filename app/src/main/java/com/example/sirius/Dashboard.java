@@ -3,6 +3,7 @@ package com.example.sirius;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
@@ -31,6 +33,9 @@ public class Dashboard extends AppCompatActivity {
 
     ArrayList<String> createdPdfList;
     ListView pdfListView;
+    private ViewPageAdapter viewPagerAdapter;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,12 +71,20 @@ public class Dashboard extends AppCompatActivity {
 
         //signout = findViewById(R.id.buttonsignout);
         cameraOpenButton = findViewById(R.id.floatingActionButton);
-        pdfListView = findViewById(R.id.pdflistview);
+        //pdfListView = findViewById(R.id.pdflistview);
+        viewPager = findViewById(R.id.viewpager);
+
 
 
         firebaseAuth=FirebaseAuth.getInstance();
+        viewPagerAdapter = new ViewPageAdapter(getSupportFragmentManager());
+        viewPagerAdapter.add(new pdfListFragment(), "PDF LIST");
+        viewPagerAdapter.add(new txtListFragment(), "TXT LIST");
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
-        getBatchDirectoryName();
+       /* getBatchDirectoryName();
         createdPdfList = new ArrayList<>();
         fetchPDF();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,createdPdfList);
@@ -84,12 +97,12 @@ public class Dashboard extends AppCompatActivity {
             fetchPDF();
             pdfListView.setAdapter(arrayAdapter);
             arrayAdapter.notifyDataSetChanged();
-            /*finish();
-            startActivity(getIntent());*/
-            /*overridePendingTransition(0, 0);
+            *//*finish();
+            startActivity(getIntent());*//*
+            *//*overridePendingTransition(0, 0);
             startActivity(getIntent());
-            overridePendingTransition(0, 0);*/
-        }
+            overridePendingTransition(0, 0);*//*
+        }*/
        //pdfListView.deferNotifyDataSetChanged();
         cameraOpenButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,15 +112,15 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        pdfListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*pdfListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 File file = new File(getBatchDirectoryName(),createdPdfList.get(position));
 
-                /*Uri uri = Uri.fromFile(file);
+                *//*Uri uri = Uri.fromFile(file);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.setDataAndType(uri, "application/pdf");*/
+                intent.setDataAndType(uri, "application/pdf");*//*
                 Uri pdfContentFile = FileProvider.getUriForFile(Dashboard.this,BuildConfig.APPLICATION_ID+".provider",file);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -122,7 +135,7 @@ public class Dashboard extends AppCompatActivity {
                     Toast.makeText(Dashboard.this, "Failed to open", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
        /* signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
