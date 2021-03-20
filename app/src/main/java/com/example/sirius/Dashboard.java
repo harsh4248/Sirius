@@ -80,6 +80,7 @@ public class Dashboard extends AppCompatActivity {
         viewPagerAdapter = new ViewPageAdapter(getSupportFragmentManager());
         viewPagerAdapter.add(new pdfListFragment(), "PDF LIST");
         viewPagerAdapter.add(new txtListFragment(), "TXT LIST");
+        viewPagerAdapter.add(new digitalInkFragment(), "Signature");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
