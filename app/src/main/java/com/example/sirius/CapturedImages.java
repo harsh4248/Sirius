@@ -49,9 +49,9 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.yalantis.ucrop.UCrop;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
+/*import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFRun;*/
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -319,7 +319,7 @@ public class CapturedImages extends AppCompatActivity implements Serializable {
 
     }
 
-    private void editWord(ArrayList<String> lines)  {
+   /* private void editWord(ArrayList<String> lines)  {
         String fileString = getExternalFilesDir(null).toString()+"/word";
         final File file = new File(fileString,globalWordNameString+".docx");
         XWPFDocument xwpfDocument = new XWPFDocument();
@@ -360,9 +360,9 @@ public class CapturedImages extends AppCompatActivity implements Serializable {
         final File file = new File(fileString,globalWordNameString+".docx");
         Log.e("TimesLoop",Integer.toString(1));
         try {
-            /*if(!file.exists()) {
+            *//*if(!file.exists()) {
                 file.createNewFile();
-            }*/
+            }*//*
             Log.e("WordFun",Integer.toString(2));
             XWPFDocument xwpfDocument = new XWPFDocument();
             XWPFParagraph xwpfParagraph = xwpfDocument.createParagraph();
@@ -388,7 +388,7 @@ public class CapturedImages extends AppCompatActivity implements Serializable {
         }
 
 
-    }
+    }*/
 
     private void createPDF() {
 

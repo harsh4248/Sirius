@@ -179,6 +179,8 @@ public class digitalInkFragment extends Fragment {
             @Override
             public void onSuccess(RecognitionResult recognitionResult) {
                String temp1 = recognitionResult.getCandidates().get(0).getText();
+               //resultString +=temp1;
+               //recognitionResult.getCandidates().clear();
                resultTextView.setText(temp1);
                /*if(changeTextView==0) {
                    resultTextView.setText(temp1);

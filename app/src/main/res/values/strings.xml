@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Sirius</string>
     <string name="logout">Logout</string>
+    <string name="sync">Sync</string>
     <string name="preview_area">preview area</string>
     <string name="capture">capture button</string>
     <!-- TODO: Remove or change this placeholder text -->
